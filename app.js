@@ -235,7 +235,7 @@ btnOpenEvidence.addEventListener('click', () => {
 // Przycisk powrotu do skanera
 btnBackToScanner.addEventListener('click', () => {
     // Otwiera nową kartę z główną stroną
-    window.open(window.location.pathname, '_blank');
+    window.open('https://krowodrza.zhr.pl/huragan', '_blank');
 });
 
 // Funkcja przełączania na widok dowodu
