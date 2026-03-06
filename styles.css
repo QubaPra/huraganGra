@@ -445,9 +445,8 @@ h1::after {
     font-size: 0.9rem;
     line-height: 1.4;
     text-align: left;
-    padding: 10px;
+    padding: 0px;
     background: transparent;
-    border-left: 2px dashed var(--neon-green);
     overflow-y: auto;
     color: var(--neon-green);
 }
