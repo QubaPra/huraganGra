@@ -91,7 +91,7 @@ function updateLocation(position) {
     }
 
     // Sprawdzenie czy gracz wszedł w obszar dowodu (radius m)
-    if (roundedDistance <= 15 && nearestPoint) {
+    if (roundedDistance <= 5 && nearestPoint) {
         triggerEvidenceFound(nearestPoint);
     } else {
         hideEvidenceAlert();
