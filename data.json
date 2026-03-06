@@ -14,31 +14,31 @@
         },        
         {
             "id": "dowod_001",
-            "coords": "",
+            "coords": "50.060961161883384, 19.937628507628812",
             "type": "audio",
             "content": "druzyny.mp3"
         },
         {
             "id": "dowod_002",
-            "coords": "",
+            "coords": "50.05815074816814, 19.938005854537096",
             "type": "image",
             "content": "sztandar2.png"
         },
         {
             "id": "dowod_003",
-            "coords": "",
+            "coords": "50.05588636299507, 19.939664280272687",
             "type": "image",
             "content": "mapa.jpg"
         },
         {
             "id": "dowod_004",
-            "coords": "",
+            "coords": "50.05530424457666, 19.936257294827506",
             "type": "image",
             "content": "fredzelki.jpg"
         },
         {
             "id": "dowod_005",
-            "coords": "",
+            "coords": "50.05842525372033, 19.934285994885816",
             "type": "image",
             "content": "gazeta.jpg"
         }
