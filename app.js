@@ -5,6 +5,10 @@ const statusText = document.getElementById('status-text');
 const evidenceAlert = document.getElementById('evidence-alert');
 const btnOpenEvidence = document.getElementById('btn-open-evidence');
 const uplinkStatus = document.getElementById('uplink-status');
+const btnBackToScanner = document.getElementById('btn-back-to-scanner');
+const scannerView = document.getElementById('scanner-view');
+const evidenceView = document.getElementById('evidence-view');
+const deviceContainer = document.getElementById('device-container');
 
 let isScanning = false;
 let watchId = null;
@@ -86,8 +90,8 @@ function updateLocation(position) {
         statusText.style.color = "var(--neon-green)";
     }
 
-    // Sprawdzenie czy gracz wszedł w obszar dowodu
-    if (roundedDistance <= 8 && nearestPoint) {
+    // Sprawdzenie czy gracz wszedł w obszar dowodu (radius m)
+    if (roundedDistance <= 15 && nearestPoint) {
         triggerEvidenceFound(nearestPoint);
     } else {
         hideEvidenceAlert();
@@ -210,10 +214,10 @@ setInterval(() => {
 
 btnOpenEvidence.addEventListener('click', () => {
     if (currentNearestEvidence) {
-        evidenceOpened = true; // Flaga blokująca natrętny popup po zamknięciu karty
+        evidenceOpened = true;
         hideEvidenceAlert();
         
-        // Zatrzymanie skanera dla oszczędzania baterii
+        // Zatrzymanie skanera
         if (isScanning) {
             stopScanning();
         }
@@ -222,15 +226,97 @@ btnOpenEvidence.addEventListener('click', () => {
         if (currentNearestEvidence.type === 'url') {
             window.open(currentNearestEvidence.content, '_blank');
         } else {
-            // Przejście do osobnego pliku wyświetlacza dowodów, ukrywając id poprzez wykorzystanie localStorage
-            localStorage.setItem('tempEvidenceId', currentNearestEvidence.id);
-            window.open(`evidence.html`, '_blank');
+            // Ukrycie skanera i pokazanie dowodu
+            showEvidence(currentNearestEvidence.id);
         }
     }
 });
 
+// Przycisk powrotu do skanera
+btnBackToScanner.addEventListener('click', () => {
+    // Otwiera nową kartę z główną stroną
+    window.open(window.location.pathname, '_blank');
+});
+
+// Funkcja przełączania na widok dowodu
+function showEvidence(evidenceId) {
+    scannerView.classList.add('hidden');
+    evidenceView.classList.add('active');
+    deviceContainer.classList.add('evidence-mode');
+    loadEvidence(evidenceId);
+}
+
+// Funkcja ładowania dowodu
+async function loadEvidence(id) {
+    const contentArea = document.getElementById('content-area');
+    const header = document.getElementById('evidence-header');
+
+    const setError = () => {
+        header.innerHTML = 'DEKRYPTACJA <span style="animation: blinker 1s steps(2, start) infinite;">[ERROR]</span>';
+        header.style.color = "var(--neon-red)";
+        header.style.borderBottomColor = "var(--neon-red)";
+        document.querySelector('.watermark').innerText = "[FAILED]";
+    };
+
+    if (!id) {
+        contentArea.innerHTML = "<p>Błąd: Brak identyfikatora pliku.</p>";
+        setError();
+        return;
+    }
+
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        const item = data.points.find(p => p.id === id);
+
+        if (!item) {
+            contentArea.innerHTML = "<p>Brak pliku w bazie (Usunięty przez system?).</p>";
+            setError();
+            return;
+        }
+
+        const typeLabels = {
+            'text': 'TYP: TEKSTOWY',
+            'image': 'TYP: OBRAZ',
+            'audio': 'TYP: NAGRANIE AUDIO',
+            'url': 'TYP: ŁĄCZE SIECIOWE'
+        };
+        document.getElementById('evidence-type-label').innerText = typeLabels[item.type] || 'TYP: NIEZNANY';
+
+        // Render based on type
+        if (item.type === 'text') {
+            contentArea.innerHTML = `<div class="evidence-item-wrapper"><div class="text-content">${item.content}</div></div>`;
+        } else if (item.type === 'image') {
+            contentArea.innerHTML = `<div class="evidence-item-wrapper"><img src="${item.content}" alt="Dowód fotograficzny"></div>`;
+        } else if (item.type === 'audio') {
+            contentArea.innerHTML = `<div class="evidence-item-wrapper"><audio controls src="${item.content}"></audio></div>`;
+        } else {
+            contentArea.innerHTML = "<p>Nieznany typ nośnika.</p>";
+            setError();
+        }
+
+    } catch (err) {
+        contentArea.innerHTML = "<p>Błąd połączenia z bazą główną.</p>";
+        setError();
+    }
+}
+
+// Sprawdzenie parametrów URL przy starcie (dla debugowania)
+function checkUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const evidenceParam = urlParams.get('evidence');
+    
+    if (evidenceParam) {
+        // Tryb debugowania - bezpośrednie wyświetlenie dowodu
+        showEvidence(evidenceParam);
+    }
+}
+
 // Inicjalizacja ładownia danych
 loadEvidenceData();
+
+// Sprawdzenie parametrów URL przy starcie
+checkUrlParams();
 
 // Sprawdzanie uprawnień do geolokalizacji na starcie
 if (navigator.permissions) {

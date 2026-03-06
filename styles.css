@@ -168,12 +168,14 @@ h1::after {
     align-items: center;
     position: relative;
     overflow: hidden;
+    padding: 10px;
 }
 
 #radar-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     box-shadow: 0 0 15px rgba(0, 255, 65, 0.2), inset 0 0 40px rgba(0, 255, 65, 0.2);
     display: flex;
@@ -268,8 +270,8 @@ h1::after {
 
 #controls-area {
     margin-top: auto;
-    padding-top: 15px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
     flex-shrink: 0;
 }
@@ -277,7 +279,7 @@ h1::after {
 .btn {
     width: 100%;
     padding: 15px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-family: inherit;
     font-weight: bold;
     background-color: var(--panel-bg);
@@ -459,7 +461,8 @@ h1::after {
 
 .evidence-btn-wrapper {
     flex-shrink: 0;
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 0;
 }
 

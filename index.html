@@ -5,40 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HURALOKALIZATOR 2045</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Style dla sekcji dowodów */
+        #scanner-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        #scanner-view.hidden {
+            display: none;
+        }
+        #evidence-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        #evidence-view.active {
+            display: flex;
+        }
+        #evidence-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        #device-container.evidence-mode {
+            padding: 15px !important;
+            height: 100dvh;
+        }
+        #evidence-container h2 {
+            border-bottom: 1px dashed var(--neon-red);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .watermark {
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(255,0,0,0.05);
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            letter-spacing: 5px;
+        }
+    </style>
 </head>
 <body>
+    <div class="watermark">[DECRYPTED]</div>
+    
     <div id="device-container">
-        <header>
-            <div class="top-bar">
-                <span class="signal-icon">UPLINK <span id="uplink-status" class="status-inactive">[INACTIVE]</span></span>
-                VER. 3.3.1945
-            </div>
-            <h1 id="main-title" data-text="HURALOKALIZATOR 2045">HURALOKALIZATOR 2045</h1>
-            <p class="subtitle">Moduł Namierzania Danych</p>
-        </header>
-
-        <main id="scanner-area">
-            <div id="radar-container" class="inactive">
-                <div class="radar-circle">
-                    <div class="radar-sweep"></div>
+        <!-- Widok skanera -->
+        <div id="scanner-view">
+            <header>
+                <div class="top-bar">
+                    <span class="signal-icon">UPLINK <span id="uplink-status" class="status-inactive">[INACTIVE]</span></span>
+                    VER. 3.3.1945
                 </div>
-                <div class="distance-wrapper">
-                    <div id="distance-display">--<span class="unit">m</span></div>
-                    <div id="status-text">OFFLINE</div>
+                <h1 id="main-title" data-text="HURALOKALIZATOR 2045">HURALOKALIZATOR 2045</h1>
+                <p class="subtitle">Moduł Namierzania Danych</p>
+            </header>
+
+            <main id="scanner-area">
+                <div id="radar-container" class="inactive">
+                    <div class="radar-circle">
+                        <div class="radar-sweep"></div>
+                    </div>
+                    <div class="distance-wrapper">
+                        <div id="distance-display">--<span class="unit">m</span></div>
+                        <div id="status-text">OFFLINE</div>
+                    </div>
+                </div>
+            </main>
+
+            <div id="controls-area">
+                <button id="btn-toggle-scan" class="btn primary">INICJUJ SKANOWANIE</button>
+            </div>
+
+            <div id="evidence-alert" class="hidden">
+                <div class="pulse-ring"></div>
+                <div class="alert-content">
+                    <span class="alert-icon">⚠</span>
+                    <h3>WYKRYTO ZASOBY</h3>
+                    <button id="btn-open-evidence" class="btn danger">DEKRYPTUJ DANE</button>
                 </div>
             </div>
-        </main>
-
-        <div id="controls-area">
-            <button id="btn-toggle-scan" class="btn primary">INICJUJ SKANOWANIE</button>
         </div>
 
-        <div id="evidence-alert" class="hidden">
-            <div class="pulse-ring"></div>
-            <div class="alert-content">
-                <span class="alert-icon">⚠</span>
-                <h3>WYKRYTO ZASOBY</h3>
-                <button id="btn-open-evidence" class="btn danger">DEKRYPTUJ DANE</button>
+        <!-- Widok dowodu -->
+        <div id="evidence-view">
+            <div id="evidence-container">
+                <h2 id="evidence-header" style="color: var(--neon-green); border-bottom-color: var(--neon-green);">DEKRYPTACJA <span style="animation: blinker 1s steps(2, start) infinite;">[SUKCES]</span></h2>
+                <div id="evidence-type-label" style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px; letter-spacing: 2px;"></div>
+                <div class="evidence-box" id="content-area">
+                    <p class="blink">Rozszyfrowywanie bajtów...</p>
+                </div>
+                <div class="evidence-btn-wrapper">
+                    <button class="btn primary" id="btn-back-to-scanner">WRÓĆ DO SKANERA</button>
+                </div>
             </div>
         </div>
     </div>
