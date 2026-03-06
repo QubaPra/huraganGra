@@ -244,7 +244,25 @@ function showEvidence(evidenceId) {
     evidenceView.classList.add('active');
     deviceContainer.classList.add('evidence-mode');
     loadEvidence(evidenceId);
+    
+    // Dodanie wpisu do historii przeglądarki dla obsługi przycisku cofania
+    history.pushState({ view: 'evidence' }, '');
 }
+
+// Funkcja powrotu do skanera
+function backToScanner() {
+    scannerView.classList.remove('hidden');
+    evidenceView.classList.remove('active');
+    deviceContainer.classList.remove('evidence-mode');
+}
+
+// Obsługa przycisku cofania w przeglądarce
+window.addEventListener('popstate', (event) => {
+    if (evidenceView.classList.contains('active')) {
+        // Jeśli widok dowodu jest aktywny, wróć do skanera
+        backToScanner();
+    }
+});
 
 // Funkcja ładowania dowodu
 async function loadEvidence(id) {
