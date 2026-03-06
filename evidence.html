@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Materiał Dowodowy</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #device-container {
+            padding: 15px !important;
+            height: 100dvh;
+        }
+        #evidence-container h2 {
+            border-bottom: 1px dashed var(--neon-red);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .watermark {
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(255,0,0,0.05);
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            letter-spacing: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark">[DECRYPTED]</div>
+    <div id="device-container">
+        <div id="evidence-container">
+            <h2 id="evidence-header" style="color: var(--neon-green); border-bottom-color: var(--neon-green);">DEKRYPTACJA <span style="animation: blinker 1s steps(2, start) infinite;">[SUKCES]</span></h2>
+            <div id="evidence-type-label" style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px; letter-spacing: 2px;"></div>
+            <div class="evidence-box" id="content-area">
+                <p class="blink">Rozszyfrowywanie bajtów...</p>
+            </div>
+            <div class="evidence-btn-wrapper">
+                <button class="btn primary" onclick="window.close()">WRÓĆ DO SKANERA</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadEvidence() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let id = urlParams.get('id');
+
+            // Logika ukrywania ID - przepinanie ID z localStorage lub zapamiętanie na odświeżenie karty
+            if (id) {
+                // Zapisz ID na wypadek odświeżenia w tej konkretnej karcie
+                sessionStorage.setItem('currentEvidenceId', id);
+            } else if (localStorage.getItem('tempEvidenceId')) {
+                // Pobierz zapisane z innej karty ID
+                id = localStorage.getItem('tempEvidenceId');
+                sessionStorage.setItem('currentEvidenceId', id);
+                // Usuń by zablokować wklejanie "evidence.html" obcym jako działający link
+                localStorage.removeItem('tempEvidenceId');
+            } else {
+                // Na wypadek odświeżenia strony pobierz z pamięci tymczasowej tej karty
+                id = sessionStorage.getItem('currentEvidenceId');
+            }
+            
+            // Wyczyść parametr id z paska adresu przeglądarki (jeśli był widoczny)
+            if (urlParams.has('id')) {
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+            }
+
+            const contentArea = document.getElementById('content-area');
+            const header = document.getElementById('evidence-header');
+
+            const setError = () => {
+                header.innerHTML = 'DEKRYPTACJA <span style="animation: blinker 1s steps(2, start) infinite;">[ERROR]</span>';
+                header.style.color = "var(--neon-red)";
+                header.style.borderBottomColor = "var(--neon-red)";
+                document.querySelector('.watermark').innerText = "[FAILED]";
+            };
+
+            if (!id) {
+                contentArea.innerHTML = "<p>Błąd: Brak identyfikatora pliku.</p>";
+                setError();
+                return;
+            }
+
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                const item = data.points.find(p => p.id === id);
+
+                if (!item) {
+                    contentArea.innerHTML = "<p>Brak pliku w bazie (Usunięty przez system?).</p>";
+                    setError();
+                    return;
+                }
+
+                const typeLabels = {
+                    'text': 'TYP: TEKSTOWY',
+                    'image': 'TYP: OBRAZ',
+                    'audio': 'TYP: NAGRANIE AUDIO',
+                    'url': 'TYP: ŁĄCZE SIECIOWE'
+                };
+                document.getElementById('evidence-type-label').innerText = typeLabels[item.type] || 'TYP: NIEZNANY';
+
+                // Render based on type
+                if (item.type === 'text') {
+                    contentArea.innerHTML = `<div class="evidence-item-wrapper"><div class="text-content">${item.content}</div></div>`;
+                } else if (item.type === 'image') {
+                    contentArea.innerHTML = `<div class="evidence-item-wrapper"><img src="${item.content}" alt="Dowód fotograficzny"></div>`;
+                } else if (item.type === 'audio') {
+                    contentArea.innerHTML = `<div class="evidence-item-wrapper"><audio controls src="${item.content}"></audio></div>`;
+                } else {
+                    contentArea.innerHTML = "<p>Nieznany typ nośnika.</p>";
+                    setError();
+                }
+
+            } catch (err) {
+                contentArea.innerHTML = "<p>Błąd połączenia z bazą główną.</p>";
+                setError();
+            }
+        }
+
+        loadEvidence();
+    </script>
+</body>
+</html>

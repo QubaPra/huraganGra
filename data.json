@@ -1,0 +1,46 @@
+{
+    "points": [
+        {
+            "id": "test_001",
+            "coords": "50.05827145480238, 19.75174316278948",
+            "type": "audio",
+            "content": "druzyny.mp3"
+        },
+        {
+            "id": "test_002",
+            "coords": "50.05799663402093, 19.75165565969377",
+            "type": "image",
+            "content": "gazeta.jpg"
+        },        
+        {
+            "id": "dowod_001",
+            "coords": "",
+            "type": "audio",
+            "content": "druzyny.mp3"
+        },
+        {
+            "id": "dowod_002",
+            "coords": "",
+            "type": "image",
+            "content": "sztandar2.png"
+        },
+        {
+            "id": "dowod_003",
+            "coords": "",
+            "type": "image",
+            "content": "mapa.jpg"
+        },
+        {
+            "id": "dowod_004",
+            "coords": "",
+            "type": "image",
+            "content": "fredzelki.jpg"
+        },
+        {
+            "id": "dowod_005",
+            "coords": "",
+            "type": "image",
+            "content": "gazeta.jpg"
+        }
+    ]
+}
