@@ -2,13 +2,13 @@
     "points": [
         {
             "id": "test_001",
-            "coords": "50.10743756947668, 19.904499853191215",
+            "coords": "56.10743756947668, 19.904499853191215",
             "type": "audio",
             "content": "druzyny.mp3"
         },
         {
             "id": "test_002",
-            "coords": "50.05813278107186, 19.751685408043084",
+            "coords": "53.05813278107186, 19.751685408043084",
             "type": "text",
             "content": "<h2>Odegrajcie i nagrajcie telefonem jedną scenę z filmu HOFILMu. Pokażcie go na końcu gry prowadzącym.</h2> <iframe src=\"https://drive.google.com/file/d/1QTFRQ4tborLPPBLRPi9ekkEyq_oRgZw2/preview?t=473\" width=\"100%\" height=\"250px\" style=\"border: none;\"></iframe>"
         },
@@ -44,9 +44,52 @@
         },
         {
             "id": "test_006",
-            "coords": "50.05915280730155, 19.94060561155399",
+            "coords": "50.05915280730155, 29.94060561155399",
             "type": "text",
             "content": "<h2>Odegrajcie i nagrajcie telefonem jedną scenę z filmu HOFILMu. Pokażcie go na końcu gry prowadzącym.</h2> <iframe src=\"https://drive.google.com/file/d/1QTFRQ4tborLPPBLRPi9ekkEyq_oRgZw2/preview?t=473\" width=\"100%\" height=\"250px\" style=\"border: none;\"></iframe>"
+        },
+        {
+            "id": "zar_001",
+            "coords": "50.000116265975855, 19.91671105381535",
+            "type": "audio",
+            "content": "zeznanieDruzynowy.mp3"
+        },
+        {
+            "id": "zar_002",
+            "coords": "50.00168140175089, 19.914494112797183",
+            "type": "image",
+            "content": "rebus.png"
+        },
+        {
+            "id": "zar_003",
+            "coords": "50.00104781466889, 19.912960056628283",
+            "type": "text",
+            "content": "Bmywr kskbr pkdcjyzmicj uk ezcywkir n jcgk kdencinc"
+        },
+        {
+            "id": "zar_004",
+            "coords": "49.99878148332639, 19.91685452583699",
+            "type": "image",
+            "content": "messengerPieniadz.png"
+        },
+        {
+            "id": "zar_005",
+            "coords": "49.99920544853418, 19.920047132525966",
+            "type": "text",
+            "content": "Wyślij mail UDW do jakub.prazuch@zhr.pl ze zdjęciem zrobionym w tym miejscu w kierunku 267 stopni."
+        },
+        {
+            "id": "zar_006",
+            "coords": "50.0000726234881, 19.91204413841298",
+            "type": "text",
+            "content": "Wyślij SMS na numer 882 773 782 z wygenerowanym kodem QR z linkiem do strony drużyny."
+        },
+        {
+            "id": "zar_007",
+            "coords": "49.998568241850215, 19.914545290732818",
+            "type": "audio",
+            "content": "morse2.mp3"
         }
+        
     ]
 }
